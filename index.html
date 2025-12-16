@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecionando...</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #111; /* Fundo escuro estilo Telegram/TikTok */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* Tela de Carregamento (Padrão) */
+        #loading-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #0088cc; /* Azul Telegram */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        /* Tela de Tutorial (Só aparece no TikTok) */
+        #tiktok-tutorial {
+            display: none; /* Escondido por padrão */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            padding: 20px;
+            z-index: 10;
+        }
+
+        .arrow-container {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            animation: bounce 1.5s infinite;
+        }
+
+        .arrow {
+            font-size: 40px;
+            color: #fff;
+            transform: rotate(-45deg); /* Aponta para o canto superior direito */
+            display: block;
+        }
+
+        .tutorial-content {
+            margin-top: 150px;
+        }
+
+        h2 { color: #0088cc; margin-bottom: 15px; }
+        
+        .step {
+            background: #222;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 1px solid #444;
+            font-size: 1.1rem;
+        }
+
+        .btn-manual {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: #0088cc;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        /* Animações */
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(10px);}
+            60% {transform: translateY(5px);}
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loading-screen">
+        <div class="spinner"></div>
+        <p>Abrindo Telegram...</p>
+    </div>
+
+    <div id="tiktok-tutorial">
+        <div class="arrow-container">
+            <span class="arrow">⬆</span>
+            <span style="display:block; font-size:12px; font-weight:bold;">CLIQUE AQUI</span>
+        </div>
+
+        <div class="tutorial-content">
+            <h2>⚠️ Ação Necessária</h2>
+            <p style="margin-bottom: 20px;">O TikTok não permite abrir este link diretamente.</p>
+            
+            <div class="step">1. Toque nos <strong>3 pontinhos</strong> ou na <strong>bússola</strong> lá em cima ↗</div>
+            <div class="step">2. Selecione <strong>"Abrir no Navegador"</strong></div>
+            
+            <p style="margin-top: 30px; font-size: 0.9rem; opacity: 0.7;">Se não funcionar:</p>
+            <a href="https://t.me/+MpcagmCyzpFhNTQx" class="btn-manual">Tentar abrir novamente</a>
+        </div>
+    </div>
+
+    <script>
+        // SEU LINK AQUI
+        const telegramLink = "https://t.me/+MpcagmCyzpFhNTQx";
+
+        // Verifica se está no navegador do TikTok ou Instagram (geralmente bloqueiam deep links)
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        const isInstagram = userAgent.indexOf('Instagram') > -1;
+        const isTikTok = userAgent.indexOf('TikTok') > -1 || userAgent.indexOf('Bytedance') > -1;
+
+        if (isTikTok || isInstagram) {
+            // Se for TikTok, esconde o loading e mostra o tutorial
+            document.getElementById('loading-screen').style.display = 'none';
+            document.getElementById('tiktok-tutorial').style.display = 'block';
+        } else {
+            // Se for navegador normal (Chrome, Safari, etc), redireciona direto
+            window.location.href = telegramLink;
+        }
+    </script>
+
+</body>
+</html>
