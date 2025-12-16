@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acesso Exclusivo</title>
+    <title>Carregando...</title>
     <style>
         /* Reset e Base */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -26,7 +26,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.96);
+            background: rgba(0, 0, 0, 0.98); /* Fundo bem escuro */
             z-index: 9999;
             text-align: center;
             padding: 20px;
@@ -59,10 +59,11 @@
 
         /* Conteúdo do Tutorial */
         .tutorial-content {
-            margin-top: 180px; /* Espaço para não cobrir a seta */
+            margin-top: 160px;
             display: flex;
             flex-direction: column;
             gap: 20px;
+            padding: 0 10px;
         }
 
         .step-box {
@@ -79,22 +80,9 @@
             margin-bottom: 10px;
         }
 
-        .step-box p { font-size: 1rem; color: #ddd; }
+        .step-box p { font-size: 1rem; color: #ddd; line-height: 1.4; }
         
         strong { color: #fff; font-weight: 700; }
-
-        /* Botão de fallback caso a pessoa queira tentar clicar */
-        .btn-try {
-            margin-top: 30px;
-            padding: 15px 30px;
-            background: #25D366;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-        }
 
         /* Animação da Seta */
         @keyframes bounce {
@@ -103,23 +91,22 @@
             60% { transform: translateY(10px); }
         }
 
-        /* APENAS PARA TESTE (Botão que aparece no PC) */
-        #debug-btn {
-            display: none;
-            background: gray;
-            padding: 10px;
+        /* APENAS PARA TESTE NO PC */
+        #debug-text {
+            color: #555;
             position: absolute;
-            bottom: 10px;
-            cursor: pointer;
+            bottom: 20px;
+            font-size: 12px;
         }
     </style>
 </head>
 <body>
 
     <div id="loading">
-        <p>🔄 Redirecionando para o Telegram...</p>
-        <br>
-        <button id="debug-btn" onclick="forceTutorial()">MODO TESTE: Ver Tutorial</button>
+        <div style="border: 4px solid #333; border-top: 4px solid #fff; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
+        <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+        
+        <p id="debug-text">Aguardando redirecionamento...</p>
     </div>
 
     <div id="tiktok-overlay">
@@ -130,17 +117,17 @@
 
         <div class="tutorial-content">
             <div class="step-box">
-                <h2>🔒 Link Protegido</h2>
-                <p>O TikTok não abre este link diretamente.</p>
+                <h2>⚠️ Ação Necessária</h2>
+                <p>O TikTok bloqueia links externos.</p>
             </div>
 
             <div class="step-box">
-                <p>1. Toque nos <strong>3 pontinhos</strong> (ou ícone de bússola/compartilhar) lá em cima ↗</p>
+                <p>1. Toque nos <strong>3 pontinhos</strong> (ou ícone de bússola) aqui em cima ↗</p>
                 <hr style="border: 0; border-top: 1px solid #333; margin: 10px 0;">
-                <p>2. Escolha a opção <br>🌐 <strong>Abrir no Navegador</strong> (Chrome/Safari)</p>
+                <p>2. Selecione <br>🌐 <strong>Abrir no Navegador</strong></p>
             </div>
-
-            <a href="https://t.me/+MpcagmCyzpFhNTQx" class="btn-try">Tentar abrir mesmo assim</a>
+            
+            <p style="font-size: 0.8rem; color: #666; margin-top: 20px;">Tentando abrir automaticamente...</p>
         </div>
     </div>
 
@@ -148,39 +135,26 @@
         // SEU LINK
         const telegramLink = "https://t.me/+MpcagmCyzpFhNTQx";
 
-        // Função que detecta se é o navegador embutido do TikTok
         function isTikTokBrowser() {
             const ua = navigator.userAgent || navigator.vendor || window.opera;
             return (ua.indexOf('TikTok') > -1 || ua.indexOf('Bytedance') > -1);
         }
 
-        // Função que mostra o tutorial
-        function showTutorial() {
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('tiktok-overlay').style.display = 'block';
-        }
-
-        // Função que redireciona direto
-        function redirectNow() {
+        // Tenta abrir o link
+        function tryToOpen() {
             window.location.href = telegramLink;
         }
 
-        // LÓGICA PRINCIPAL
         if (isTikTokBrowser()) {
-            // Se for TikTok, PARA TUDO e mostra o tutorial
-            showTutorial();
-        } else {
-            // Se NÃO for TikTok (Chrome, Safari, PC), redireciona na hora
-            // Mas vou dar um atraso de 0.5s só pro script carregar
-            setTimeout(redirectNow, 100);
+            // 1. Mostra o tutorial imediatamente
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('tiktok-overlay').style.display = 'block';
             
-            // Mostra botão de teste se não redirecionar instantaneamente (ex: PC)
-            document.getElementById('debug-btn').style.display = 'block';
-        }
-
-        // Função extra só para você testar clicando no botão cinza
-        function forceTutorial() {
-            showTutorial();
+            // 2. Tenta forçar a abertura mesmo assim (vai que cola)
+            setTimeout(tryToOpen, 500); 
+        } else {
+            // Se for Chrome/Safari/Insta, abre direto sem mostrar nada
+            tryToOpen();
         }
     </script>
 </body>
