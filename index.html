@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carregando...</title>
+    <title>Acesso Restrito</title>
     <style>
         /* Reset e Base */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -26,7 +26,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.98); /* Fundo bem escuro */
+            background: rgba(0, 0, 0, 0.98);
             z-index: 9999;
             text-align: center;
             padding: 20px;
@@ -90,14 +90,6 @@
             40% { transform: translateY(15px); }
             60% { transform: translateY(10px); }
         }
-
-        /* APENAS PARA TESTE NO PC */
-        #debug-text {
-            color: #555;
-            position: absolute;
-            bottom: 20px;
-            font-size: 12px;
-        }
     </style>
 </head>
 <body>
@@ -105,8 +97,6 @@
     <div id="loading">
         <div style="border: 4px solid #333; border-top: 4px solid #fff; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
         <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
-        
-        <p id="debug-text">Aguardando redirecionamento...</p>
     </div>
 
     <div id="tiktok-overlay">
@@ -118,7 +108,7 @@
         <div class="tutorial-content">
             <div class="step-box">
                 <h2>⚠️ Ação Necessária</h2>
-                <p>O TikTok bloqueia links externos.</p>
+                <p>O TikTok bloqueia o acesso a grupos privados.</p>
             </div>
 
             <div class="step-box">
@@ -126,8 +116,6 @@
                 <hr style="border: 0; border-top: 1px solid #333; margin: 10px 0;">
                 <p>2. Selecione <br>🌐 <strong>Abrir no Navegador</strong></p>
             </div>
-            
-            <p style="font-size: 0.8rem; color: #666; margin-top: 20px;">Tentando abrir automaticamente...</p>
         </div>
     </div>
 
@@ -137,24 +125,17 @@
 
         function isTikTokBrowser() {
             const ua = navigator.userAgent || navigator.vendor || window.opera;
+            // Detecta TikTok ou Bytedance no user agent
             return (ua.indexOf('TikTok') > -1 || ua.indexOf('Bytedance') > -1);
         }
 
-        // Tenta abrir o link
-        function tryToOpen() {
-            window.location.href = telegramLink;
-        }
-
         if (isTikTokBrowser()) {
-            // 1. Mostra o tutorial imediatamente
+            // Se for TikTok: SÓ MOSTRA O TUTORIAL. Não faz mais nada.
             document.getElementById('loading').style.display = 'none';
             document.getElementById('tiktok-overlay').style.display = 'block';
-            
-            // 2. Tenta forçar a abertura mesmo assim (vai que cola)
-            setTimeout(tryToOpen, 500); 
         } else {
-            // Se for Chrome/Safari/Insta, abre direto sem mostrar nada
-            tryToOpen();
+            // Se NÃO for TikTok (Chrome, Safari, etc): Redireciona
+            window.location.href = telegramLink;
         }
     </script>
 </body>
